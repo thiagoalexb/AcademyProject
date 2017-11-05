@@ -55,7 +55,7 @@ namespace Academy.WebAPI
 
             services.AddSwaggerGen(c =>
             {
-                s.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
                     Title = "Academy Project",
