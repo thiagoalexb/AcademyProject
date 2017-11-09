@@ -43,7 +43,6 @@ namespace Academy.Infra.Data.Context
 
             // define the database to use
             optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
-            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=AcadedmyProject;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
 
         public override int SaveChanges()

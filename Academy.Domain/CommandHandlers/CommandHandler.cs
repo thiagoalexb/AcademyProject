@@ -30,7 +30,7 @@ namespace Academy.Domain.CommandHandlers
         public bool Commit()
         {
             if (_notifications.HasNotifications()) return false;
-            var commandResponse = _uow.Commit();
+            var commandResponse = _uow.Complete();
             if (commandResponse.Success) return true;
 
             _bus.RaiseEvent(new DomainNotification("Commit", "We had a problem during saving your data."));

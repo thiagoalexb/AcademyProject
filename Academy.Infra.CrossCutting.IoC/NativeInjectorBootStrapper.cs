@@ -18,6 +18,7 @@ using Academy.Infra.Data.UnitOfWork;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Academy.Infra.CrossCutting.IoC
@@ -52,7 +53,7 @@ namespace Academy.Infra.CrossCutting.IoC
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<AcademyContext>();
+            services.AddScoped<DbContext, AcademyContext>();
 
             // Infra - Data EventSourcing
             services.AddScoped<IEventStoreRepository, EventStoreSQLRepository>();

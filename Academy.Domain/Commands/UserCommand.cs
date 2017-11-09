@@ -1,11 +1,10 @@
 ﻿using Academy.Domain.Core.Commands;
+using Academy.Domain.Entities.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Academy.Domain.Commands
 {
-    public abstract class UserCommand : Command
+    public abstract class UserCommand : EntityCommand
     {
         public Guid UserId { get; protected set; }
         public string FirstName { get; protected set; }

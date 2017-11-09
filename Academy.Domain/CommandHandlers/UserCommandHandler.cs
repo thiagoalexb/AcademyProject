@@ -7,8 +7,6 @@ using Academy.Domain.Interfaces;
 using Academy.Domain.Interfaces.Core;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Academy.Domain.CommandHandlers
 {
@@ -17,16 +15,17 @@ namespace Academy.Domain.CommandHandlers
         INotificationHandler<UpdateUserCommand>,
         INotificationHandler<RemoveUserCommand>
     {
-        private readonly IUserRepository _userRepository;
         private readonly IMediatorHandler _bus;
+        private readonly IUnitOfWork _uow;
+        private readonly IUserRepository _userRepository;
 
-        public UserCommandHandler(IUserRepository userRepository,
-                                      IUnitOfWork uow,
-                                      IMediatorHandler bus,
-                                      INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
+        public UserCommandHandler(  IUnitOfWork uow,
+                                    IMediatorHandler bus,
+                                    INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
         {
-            _userRepository = userRepository;
             _bus = bus;
+            _uow = uow;
+            _userRepository = _uow.Repository<IUserRepository>();
         }
 
         public void Handle(RegisterNewUserCommand message)
@@ -38,11 +37,12 @@ namespace Academy.Domain.CommandHandlers
             }
 
             var user = new User(Guid.NewGuid(), message.FirstName, message.LastName,
-                                    message.Email, message.Password, message.DateOfBirth);
+                                    message.Email, message.Password, message.DateOfBirth, 
+                                    message.CreationDate, message.CreatorUserId, message.LastUpdateDate, message.LastUpdatedUserId);
 
             if (_userRepository.GetByEmail(user.Email) != null)
             {
-                _bus.RaiseEvent(new DomainNotification(message.MessageType, "The customer e-mail has already been taken."));
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Este e-mail já está sendo usado"));
                 return;
             }
 
@@ -51,7 +51,8 @@ namespace Academy.Domain.CommandHandlers
             if (Commit())
             {
                 _bus.RaiseEvent(new UserRegisteredEvent(user.UserId, user.FirstName, user.LastName,
-                                    user.Email, user.Password, user.DateOfBirth));
+                                    user.Email, user.Password, user.DateOfBirth,
+                                    user.CreationDate, user.CreatorUserId, user.LastUpdateDate, user.LastUpdatedUserId));
             }
         }
 
@@ -63,26 +64,32 @@ namespace Academy.Domain.CommandHandlers
                 return;
             }
 
-            var user = new User(message.UserId, message.FirstName, message.LastName,
-                                    message.Email, message.Password, message.DateOfBirth);
+            var existingUser = _userRepository.Get(message.UserId);
 
-            var existingCustomer = _userRepository.GetByEmail(user.Email);
-
-            if (existingCustomer != null && existingCustomer.UserId != user.UserId)
+            if (existingUser != null)
             {
-                if (!existingCustomer.Equals(user))
+                if (existingUser.Email != message.Email && _userRepository.GetByEmail(message.Email) != null)
                 {
-                    _bus.RaiseEvent(new DomainNotification(message.MessageType, "The customer e-mail has already been taken."));
+                    _bus.RaiseEvent(new DomainNotification(message.MessageType, "Este e-mail já está sendo usado"));
                     return;
                 }
-            }
 
-            _userRepository.Update(user);
+                existingUser.FirstName = message.FirstName;
+                existingUser.LastName = message.LastName;
+                existingUser.Email = message.Email;
+                existingUser.Password = message.Password;
+                existingUser.DateOfBirth = message.DateOfBirth;
+                existingUser.CreationDate = message.CreationDate;
+                existingUser.CreatorUserId = message.CreatorUserId;
+                existingUser.LastUpdateDate = message.LastUpdateDate;
+                existingUser.LastUpdatedUserId = message.LastUpdatedUserId;
+            }
 
             if (Commit())
             {
-                _bus.RaiseEvent(new UserUpdatedEvent(user.UserId, user.FirstName, user.LastName,
-                                    user.Email, user.Password, user.DateOfBirth));
+                _bus.RaiseEvent(new UserUpdatedEvent(existingUser.UserId, existingUser.FirstName, existingUser.LastName,
+                                    existingUser.Email, existingUser.Password, existingUser.DateOfBirth,
+                                    existingUser.CreationDate, existingUser.CreatorUserId, existingUser.LastUpdateDate, existingUser.LastUpdatedUserId));
             }
         }
 

@@ -1,11 +1,12 @@
-﻿using Academy.Domain.Core.Events;
+﻿using Academy.Domain.Entities.Core;
 using System;
 
 namespace Academy.Domain.Events
 {
-    public class UserRegisteredEvent : Event
+    public class UserRegisteredEvent : EntityEvent
     {
-        public UserRegisteredEvent(Guid id, string firstName, string lastName, string email, string password, DateTime birthDate)
+        public UserRegisteredEvent(Guid id, string firstName, string lastName, string email, string password, DateTime birthDate,
+                                    DateTime creationDate, Guid? creatorUserId, DateTime? lastUpdateDate, Guid? lastUpdatedUserId)
         {
             UserId = id;
             FirstName = firstName;
@@ -14,6 +15,10 @@ namespace Academy.Domain.Events
             Password = password;
             DateOfBirth = birthDate;
             AggregateId = id;
+            CreationDate = creationDate;
+            CreatorUserId = creatorUserId;
+            LastUpdateDate = lastUpdateDate;
+            LastUpdatedUserId = lastUpdatedUserId;
         }
         public Guid UserId { get; set; }
 

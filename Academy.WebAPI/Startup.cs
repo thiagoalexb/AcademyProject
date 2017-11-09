@@ -98,8 +98,7 @@ namespace Academy.WebAPI
             {
                 authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                                        .AddJwtBearer(bearerOptions =>
+            }).AddJwtBearer(bearerOptions =>
                                         {
                                             var paramsValidation = bearerOptions.TokenValidationParameters;
                                             paramsValidation.IssuerSigningKey = signingConfigurations.Key;

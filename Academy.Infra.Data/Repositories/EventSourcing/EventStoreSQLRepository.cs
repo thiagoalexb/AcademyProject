@@ -1,5 +1,6 @@
 ﻿using Academy.Domain.Core.Events;
 using Academy.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +10,21 @@ namespace Academy.Infra.Data.Repositories.EventSourcing
 {
     public class EventStoreSQLRepository : IEventStoreRepository
     {
-        private readonly AcademyContext _context;
+        private readonly DbContext _context;
 
-        public EventStoreSQLRepository(AcademyContext context)
+        public EventStoreSQLRepository(DbContext context)
         {
             _context = context;
         }
 
         public IList<StoredEvent> All(Guid aggregateId)
         {
-            return _context.StoredEvent.Where(x => x.AggregateId == aggregateId).ToList();
+            return _context.Set<StoredEvent>().Where(x => x.AggregateId == aggregateId).ToList();
         }
 
         public void Store(StoredEvent theEvent)
         {
-            _context.StoredEvent.Add(theEvent);
+            _context.Set<StoredEvent>().Add(theEvent);
             _context.SaveChanges();
         }
 

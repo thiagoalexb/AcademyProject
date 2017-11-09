@@ -1,5 +1,4 @@
 ﻿using Academy.Domain.Interfaces.Core;
-using Academy.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,10 @@ namespace Academy.Infra.Data.Repositories.Core
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly AcademyContext Context;
+        protected readonly DbContext Context;
         protected readonly DbSet<TEntity> DbSet;
 
-        public Repository(AcademyContext context)
+        public Repository(DbContext context)
         {
             Context = context;
             DbSet = Context.Set<TEntity>();
@@ -24,9 +23,9 @@ namespace Academy.Infra.Data.Repositories.Core
             return DbSet.Find(id);
         }
 
-        public virtual IQueryable<TEntity> GetAll()
+        public virtual IEnumerable<TEntity> GetAll()
         {
-            return DbSet;
+            return DbSet.ToList();
         }
 
         public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
@@ -42,11 +41,6 @@ namespace Academy.Infra.Data.Repositories.Core
         public virtual void AddRange(IEnumerable<TEntity> entities)
         {
             DbSet.AddRange(entities);
-        }
-
-        public virtual void Update(TEntity entity)
-        {
-            DbSet.Update(entity);
         }
 
         public virtual void Remove(TEntity entity)

@@ -11,9 +11,10 @@ using System;
 namespace Academy.Infra.Data.Migrations
 {
     [DbContext(typeof(AcademyContext))]
-    partial class AcademyContextModelSnapshot : ModelSnapshot
+    [Migration("20171109023717_User_Add_IsVerified")]
+    partial class User_Add_IsVerified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

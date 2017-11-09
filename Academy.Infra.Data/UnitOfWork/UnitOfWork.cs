@@ -1,29 +1,55 @@
-﻿using Academy.Domain.Core.Commands;
+﻿using Academy.Domain;
+using Academy.Domain.Core.Commands;
 using Academy.Domain.Interfaces;
 using Academy.Domain.Interfaces.Core;
-using Academy.Infra.Data.Context;
 using Academy.Infra.Data.Repositories;
+using Academy.Infra.Data.Repositories.Core;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections;
+using System.Linq;
+using System.Reflection;
 
 namespace Academy.Infra.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AcademyContext _context;
+        private readonly DbContext _context;
+        private Hashtable repositories;
 
-        public UnitOfWork(AcademyContext context)
+        public UnitOfWork(DbContext context)
         {
             _context = context;
-            Users = new UserRepository(_context);
         }
 
-        public IUserRepository Users { get; private set; }
-
-        public int Complete()
+        public TEntity Repository<TEntity>() where TEntity : class
         {
-            return _context.SaveChanges();
+            if (repositories == null)
+            {
+                repositories = new Hashtable();
+            }
+
+            var typeName = typeof(TEntity).Name;
+
+            if (repositories.ContainsKey(typeName))
+            {
+                return (TEntity)repositories[typeName];
+            }
+
+            var type = typeof(TEntity);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface);
+
+            foreach (var item in types)
+            {
+                repositories.Add(type, Activator.CreateInstance(item, _context));
+            }
+
+            return (TEntity)repositories[type];
         }
 
-        public CommandResponse Commit()
+        public CommandResponse Complete()
         {
             var rowsAffected = _context.SaveChanges();
             return new CommandResponse(rowsAffected > 0);

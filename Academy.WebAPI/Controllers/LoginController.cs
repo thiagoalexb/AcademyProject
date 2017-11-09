@@ -3,7 +3,7 @@ using Academy.Application.ViewModels;
 using Academy.WebAPI.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Threading.Tasks;
 
 namespace Academy.WebAPI.Controllers
 {
@@ -31,16 +31,13 @@ namespace Academy.WebAPI.Controllers
 
             hasUser = user != null;
 
-            if (hasUser)
-            {
-                return new ManageToken().GetLoginObject(tokenConfigurations, signingConfigurations, user);
-            }
+            if(!hasUser) return new { authenticated = false, message = "Usuário não encontrado" };
 
-            return new
-            {
-                authenticated = false,
-                message = "Usuário não encontrado"
-            };
+            if(!user.IsVerified) return new { authenticated = false, message = "Confirme seu e-mail" };
+            
+            if (hasUser) return new ManageToken().GetLoginObject(tokenConfigurations, signingConfigurations, user);
+
+            return new { authenticated = false, message = "Algum erro ocorreu. Tente novamente!" };
         }
     }
 }

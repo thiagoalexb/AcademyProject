@@ -1,7 +1,9 @@
 ﻿using Academy.Application.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -64,6 +66,19 @@ namespace Academy.WebAPI.Security
 
             var token = handler.WriteToken(securityToken);
             return token;
+        }
+
+        public static Guid GetToken(HttpRequest request)
+        {
+            var token = request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "")?.Trim();
+
+            if (string.IsNullOrWhiteSpace(token)) return Guid.Empty;
+
+            var handler = new JwtSecurityTokenHandler();
+
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            return Guid.Parse(tokenS.Claims.FirstOrDefault(claim => claim.Type == "unique_name").Value);
         }
     }
 }

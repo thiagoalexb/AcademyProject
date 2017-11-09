@@ -2,6 +2,7 @@
 using Academy.Application.ViewModels;
 using Academy.Domain.Core.Notifications;
 using Academy.WebAPI.Controllers.Base;
+using Academy.WebAPI.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,7 @@ namespace Academy.WebAPI.Controllers
 
         [HttpPost]
         [Route("add")]
+        [TokenPostFilter]
         public IActionResult Post([FromBody]UserViewModel userViewModel)
         {
             if (!ModelState.IsValid)
@@ -53,6 +55,7 @@ namespace Academy.WebAPI.Controllers
 
         [HttpPut]
         [Route("update")]
+        [TokenPutFilter]
         public IActionResult Put([FromBody]UserViewModel entity)
         {
             if (!ModelState.IsValid)

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Academy.Application.ViewModels.Core;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Academy.Application.ViewModels
 {
-    public class UserViewModel
+    public class UserViewModel : Entity
     {
         public Guid UserId { get; set; }
 
@@ -30,5 +31,7 @@ namespace Academy.Application.ViewModels
         [Required(ErrorMessage = "A data de nascimento é obrigatória")]
         [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         public DateTime DateOfBirth { get; set; }
+
+        public bool IsVerified { get; set; }
     }
 }

@@ -5,8 +5,7 @@ namespace Academy.Domain.Interfaces.Core
 {
     public interface IUnitOfWork : IDisposable
     {
-        IUserRepository Users { get; }
-        int Complete();
-        CommandResponse Commit();
+        CommandResponse Complete();
+        TEntity Repository<TEntity>() where TEntity : class;
     }
 }

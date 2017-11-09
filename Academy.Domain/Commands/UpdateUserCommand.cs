@@ -1,13 +1,12 @@
 ﻿using Academy.Domain.Validations;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Academy.Domain.Commands
 {
     public class UpdateUserCommand : UserCommand
     {
-        public UpdateUserCommand(Guid userId, string firstName, string lastName, string email, string password, DateTime dateOfBirth)
+        public UpdateUserCommand(Guid userId, string firstName, string lastName, string email, string password, DateTime dateOfBirth,
+                                        DateTime creationDate, Guid? creatorUserId, DateTime? lastUpdateDate, Guid? lastUpdatedUserId)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -15,6 +14,10 @@ namespace Academy.Domain.Commands
             Password = password;
             DateOfBirth = dateOfBirth;
             UserId = userId;
+            CreationDate = creationDate;
+            CreatorUserId = creatorUserId;
+            LastUpdateDate = lastUpdateDate;
+            LastUpdatedUserId = lastUpdatedUserId;
         }
 
         public override bool IsValid()

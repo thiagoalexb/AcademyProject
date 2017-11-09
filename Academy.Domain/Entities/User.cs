@@ -1,8 +1,6 @@
 ﻿using Academy.Domain.Entities.Core;
 using Academy.Domain.Interfaces.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Academy.Domain.Entities
 {
@@ -14,11 +12,13 @@ namespace Academy.Domain.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public bool IsVerified { get; set; } = false;
         public string Name { get => $"{FirstName} {LastName}"; }
 
         public override string ToString() => $"Id: {UserId} - {FirstName}";
 
-        public User(Guid userId, string firstName, string lastName, string email, string password, DateTime dateOfBirth)
+        public User(Guid userId, string firstName, string lastName, string email, string password, DateTime dateOfBirth,
+                    DateTime creationDate, Guid? creatorUserId, DateTime? lastUpdateDate, Guid? lastUpdatedUserId)
         {
             UserId = userId;
             FirstName = firstName;
@@ -26,6 +26,10 @@ namespace Academy.Domain.Entities
             Email = email;
             Password = password;
             DateOfBirth = dateOfBirth;
+            CreationDate = creationDate;
+            CreatorUserId = creatorUserId;
+            LastUpdateDate = lastUpdateDate;
+            LastUpdatedUserId = lastUpdatedUserId;
         }
 
         public User()
