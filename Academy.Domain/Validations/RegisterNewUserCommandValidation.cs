@@ -10,7 +10,6 @@ namespace Academy.Domain.Validations
             ValidateLastName();
             ValidateEmail();
             ValidateBirthDate();
-            ValidatePassword();
         }
     }
 }

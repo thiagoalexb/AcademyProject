@@ -5,8 +5,10 @@ using Academy.Domain.Entities;
 using Academy.Domain.Events;
 using Academy.Domain.Interfaces;
 using Academy.Domain.Interfaces.Core;
+using Academy.Domain.Services.Interfaces;
 using MediatR;
 using System;
+using System.Threading.Tasks;
 
 namespace Academy.Domain.CommandHandlers
 {
@@ -18,14 +20,17 @@ namespace Academy.Domain.CommandHandlers
         private readonly IMediatorHandler _bus;
         private readonly IUnitOfWork _uow;
         private readonly IUserRepository _userRepository;
+        private readonly IEmailService _emailService;
 
         public UserCommandHandler(  IUnitOfWork uow,
-                                    IMediatorHandler bus,
+                                    IMediatorHandler bus, 
+                                    IEmailService emailService,
                                     INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
         {
             _bus = bus;
             _uow = uow;
             _userRepository = _uow.Repository<IUserRepository>();
+            _emailService = emailService;
         }
 
         public void Handle(RegisterNewUserCommand message)
@@ -53,6 +58,9 @@ namespace Academy.Domain.CommandHandlers
                 _bus.RaiseEvent(new UserRegisteredEvent(user.UserId, user.FirstName, user.LastName,
                                     user.Email, user.Password, user.DateOfBirth,
                                     user.CreationDate, user.CreatorUserId, user.LastUpdateDate, user.LastUpdatedUserId));
+
+                Task.Run(() 
+                    => _emailService.SendEmailAsync(user.Email, "Confirmação de senha", $"Para confirmar sua senha <a href='www.google.com'>Click aqui</a>"));
             }
         }
 

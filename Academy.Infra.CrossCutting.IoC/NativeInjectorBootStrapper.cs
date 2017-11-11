@@ -10,6 +10,8 @@ using Academy.Domain.EvemtHandlers;
 using Academy.Domain.Events;
 using Academy.Domain.Interfaces;
 using Academy.Domain.Interfaces.Core;
+using Academy.Domain.Services;
+using Academy.Domain.Services.Interfaces;
 using Academy.Infra.CrossCutting.Bus;
 using Academy.Infra.Data.Context;
 using Academy.Infra.Data.Repositories;
@@ -61,6 +63,9 @@ namespace Academy.Infra.CrossCutting.IoC
 
             // Infra - User
             services.AddScoped<IUser, User>();
+
+            //Services
+            services.AddTransient<IEmailService, EmailService>();
         }
     }
 }

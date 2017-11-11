@@ -1,6 +1,7 @@
 ﻿using Academy.Application.AutoMapper;
 using Academy.Application.Interfaces;
 using Academy.Application.Services;
+using Academy.Domain.Services;
 using Academy.Infra.CrossCutting.IoC;
 using Academy.Infra.Data.Repositories;
 using Academy.Infra.Data.UnitOfWork;
@@ -116,6 +117,8 @@ namespace Academy.WebAPI
                                             // computadores envolvidos no processo de comunicação)
                                             paramsValidation.ClockSkew = TimeSpan.Zero;
                                         });
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

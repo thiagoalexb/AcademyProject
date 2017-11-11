@@ -1,5 +1,6 @@
 ﻿using Academy.Application.Interfaces;
 using Academy.Application.ViewModels;
+using Academy.Domain.Services.Interfaces;
 using Academy.WebAPI.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace Academy.WebAPI.Controllers
     public class LoginController : Controller
     {
         private readonly IUserAppService _userAppService;
+        
 
         public LoginController(IUserAppService userAppService)
         {
             _userAppService = userAppService;
+            
         }
 
         [AllowAnonymous]
