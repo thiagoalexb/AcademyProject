@@ -9,9 +9,10 @@ namespace Academy.Application.AutoMapper
         public DomainToViewModelMappingProfile()
         {
             CreateMap<User, UserViewModel>()
-                .ForMember(x => x.Password, opt => opt.Ignore())
                 .ForMember(x => x.LastUpdateDate, opt => opt.Ignore())
                 .ForMember(x => x.LastUpdateDate, opt => opt.Ignore());
+
+            CreateMap<User, UserUpdatePasswordViewModel>();
         }
     }
 }

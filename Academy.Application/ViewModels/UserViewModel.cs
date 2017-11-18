@@ -22,12 +22,6 @@ namespace Academy.Application.ViewModels
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "A senha é obrigatória")]
-        [MaxLength(100, ErrorMessage = "A senha pode ter no máximo 100 caracteres")]
-        [MinLength(6, ErrorMessage = "A senha precisa conter no mínimo 6 caracteres")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
         [Required(ErrorMessage = "A data de nascimento é obrigatória")]
         [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         public DateTime DateOfBirth { get; set; }

@@ -24,10 +24,7 @@ namespace Academy.WebAPI.Controllers
 
         [HttpGet]
         [Route("get-all")]
-        public IActionResult Get()
-        {
-            return Response(_userAppService.GetAll());
-        }
+        public IActionResult Get() => Response(_userAppService.GetAll());
 
         [HttpGet]
         [Route("get/{id:guid}")]
@@ -42,15 +39,15 @@ namespace Academy.WebAPI.Controllers
         [HttpPost]
         [Route("add")]
         [TokenPostFilter]
-        public IActionResult Post([FromBody]UserViewModel userViewModel)
+        public IActionResult Post([FromBody]UserViewModel entity)
         {
             if (!ModelState.IsValid)
             {
                 NotifyModelStateErrors();
-                return Response(userViewModel);
+                return Response(entity);
             }
-            _userAppService.Register(userViewModel);
-            return Response(userViewModel);
+            _userAppService.Register(entity);
+            return Response(entity);
         }
 
         [HttpPut]
@@ -74,6 +71,28 @@ namespace Academy.WebAPI.Controllers
             _userAppService.Remove(id);
 
             return Response();
+        }
+
+        [HttpGet]
+        [Route("verify-password")]
+        public IActionResult VerifyPassword(string email)
+        {
+            var user = _userAppService.GetByEmail(email);
+            if (user == null) return Response(new { message = $"Este email: {email} não está cadastrado no nosso banco de dados" });
+            return Response(new { userId = user.UserId, isVerified = user.IsVerified });
+        }
+
+        [HttpPost]
+        [Route("update-password")]
+        public IActionResult UpdatePassword([FromBody]UserUpdatePasswordViewModel entity)
+        {
+            if (!ModelState.IsValid)
+            {
+                NotifyModelStateErrors();
+                return Response(entity);
+            }
+            _userAppService.UpdatePassword(entity);
+            return Response(entity);
         }
     }
 }

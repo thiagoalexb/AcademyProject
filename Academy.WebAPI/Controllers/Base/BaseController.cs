@@ -14,10 +14,7 @@ namespace Academy.WebAPI.Controllers.Base
             _notifications = (DomainNotificationHandler)notifications;
         }
 
-        protected bool IsValidOperation()
-        {
-            return (!_notifications.HasNotifications());
-        }
+        protected bool IsValidOperation() => (!_notifications.HasNotifications());
 
         protected new IActionResult Response(object result = null)
         {

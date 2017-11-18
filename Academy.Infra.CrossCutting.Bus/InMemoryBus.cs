@@ -17,10 +17,8 @@ namespace Academy.Infra.CrossCutting.Bus
             _mediator = mediator;
         }
 
-        public Task SendCommand<T>(T command) where T : Command
-        {
-            return Publish(command);
-        }
+        public Task SendCommand<T>(T command) where T : Command => 
+            Publish(command);
 
         public Task RaiseEvent<T>(T @event) where T : Event
         {
@@ -30,9 +28,7 @@ namespace Academy.Infra.CrossCutting.Bus
             return Publish(@event);
         }
 
-        private Task Publish<T>(T message) where T : Message
-        {
-            return _mediator.Publish(message);
-        }
+        private Task Publish<T>(T message) where T : Message => 
+            _mediator.Publish(message);
     }
 }

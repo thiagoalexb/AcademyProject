@@ -18,15 +18,11 @@ namespace Academy.Domain.Core.Notifications
             _notifications.Add(message);
         }
 
-        public virtual List<DomainNotification> GetNotifications()
-        {
-            return _notifications;
-        }
+        public virtual List<DomainNotification> GetNotifications() =>
+            _notifications;
 
-        public virtual bool HasNotifications()
-        {
-            return GetNotifications().Any();
-        }
+        public virtual bool HasNotifications() =>
+            GetNotifications().Any();
 
         public void Dispose()
         {

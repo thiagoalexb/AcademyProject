@@ -29,8 +29,7 @@ namespace Academy.Infra.Data.Mapping
 
             builder.Property(c => c.Password)
                 .HasColumnType("varchar(50)")
-                .HasMaxLength(50)
-                .IsRequired();
+                .HasMaxLength(50);
 
             builder.Property(c => c.DateOfBirth)
                 .IsRequired();

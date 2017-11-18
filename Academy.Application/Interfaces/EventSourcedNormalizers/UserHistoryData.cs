@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Academy.Application.EventSourcedNormalizers
+﻿namespace Academy.Application.EventSourcedNormalizers
 {
-    public class UserHistoryData
+    public class IUserHistoryData
     {
         public string UserId { get; set; }
         public string FirstName { get; set; }

@@ -43,12 +43,14 @@ namespace Academy.Infra.CrossCutting.IoC
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
             services.AddScoped<INotificationHandler<UserRegisteredEvent>, UserEventHandler>();
             services.AddScoped<INotificationHandler<UserUpdatedEvent>, UserEventHandler>();
+            services.AddScoped<INotificationHandler<UserPasswordUpdatedEvent>, UserEventHandler>();
             services.AddScoped<INotificationHandler<UserRemovedEvent>, UserEventHandler>();
 
             // Domain - Commands
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
             services.AddScoped<INotificationHandler<RegisterNewUserCommand>, UserCommandHandler>();
             services.AddScoped<INotificationHandler<UpdateUserCommand>, UserCommandHandler>();
+            services.AddScoped<INotificationHandler<UpdateUserPasswordCommand>, UserCommandHandler>();
             services.AddScoped<INotificationHandler<RemoveUserCommand>, UserCommandHandler>();
 
             // Infra - Data

@@ -1,10 +1,6 @@
 ﻿using Academy.Application.AutoMapper;
-using Academy.Application.Interfaces;
-using Academy.Application.Services;
 using Academy.Domain.Services;
 using Academy.Infra.CrossCutting.IoC;
-using Academy.Infra.Data.Repositories;
-using Academy.Infra.Data.UnitOfWork;
 using Academy.WebAPI.Configurations;
 using Academy.WebAPI.ErrorHandling;
 using Academy.WebAPI.Security;
@@ -62,7 +58,7 @@ namespace Academy.WebAPI
                     Title = "Academy Project",
                     Description = "Academy API",
                     Contact = new Contact { Name = "Thiago Alex", Email = "thiago.alexb@gmail.com" },
-                    License = new License { Name = "MIT", Url = "https://github.com/thiagoalexb/AcademyProject" }
+                    License = new License { Name = "GIT", Url = "https://github.com/thiagoalexb/AcademyProject" }
                 });
                 c.AddSecurityDefinition("Bearer",
                     new ApiKeyScheme()

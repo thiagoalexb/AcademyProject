@@ -3,15 +3,12 @@ using System;
 
 namespace Academy.Domain.Commands
 {
-    public class UpdateUserCommand : UserCommand
+    public class UpdateUserPasswordCommand : UserCommand
     {
-        public UpdateUserCommand(Guid userId, string firstName, string lastName, string email, DateTime dateOfBirth,
+        public UpdateUserPasswordCommand(Guid userId, string password,
                                         DateTime creationDate, Guid? creatorUserId, DateTime? lastUpdateDate, Guid? lastUpdatedUserId)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            DateOfBirth = dateOfBirth;
+            Password = password;
             UserId = userId;
             CreationDate = creationDate;
             CreatorUserId = creatorUserId;
@@ -21,7 +18,7 @@ namespace Academy.Domain.Commands
 
         public override bool IsValid()
         {
-            ValidationResult = new UpdateUserCommandValidation().Validate(this);
+            ValidationResult = new UpdateUserPasswordCommandVailidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }

@@ -11,15 +11,19 @@ namespace Academy.Application.AutoMapper
         public ViewModelToDomainMappingProfile()
         {
             CreateMap<UserViewModel, RegisterNewUserCommand>()
-                .ConstructUsing(c => new RegisterNewUserCommand(c.FirstName, c.LastName, c.Email, c.Password, c.DateOfBirth,
+                .ConstructUsing(c => new RegisterNewUserCommand(c.FirstName, c.LastName, c.Email, c.DateOfBirth,
                                                 c.CreationDate, c.CreatorUserId, c.LastUpdateDate, c.LastUpdatedUserId));
 
             CreateMap<UserViewModel, UpdateUserCommand>()
-                .ConstructUsing(c => new UpdateUserCommand(c.UserId, c.FirstName, c.LastName, c.Email, c.Password, c.DateOfBirth,
+                .ConstructUsing(c => new UpdateUserCommand(c.UserId, c.FirstName, c.LastName, c.Email, c.DateOfBirth,
+                                                c.CreationDate, c.CreatorUserId, c.LastUpdateDate, c.LastUpdatedUserId));
+
+            CreateMap<UserUpdatePasswordViewModel, UpdateUserPasswordCommand>()
+                .ConstructUsing(c => new UpdateUserPasswordCommand(c.UserId, c.Password,
                                                 c.CreationDate, c.CreatorUserId, c.LastUpdateDate, c.LastUpdatedUserId));
 
             CreateMap<UserViewModel, User>()
-                .ConstructUsing(c => new User(c.UserId, c.FirstName, c.LastName, c.Email, c.Password, c.DateOfBirth,
+                .ConstructUsing(c => new User(c.UserId, c.FirstName, c.LastName, c.Email, c.DateOfBirth,
                                                 c.CreationDate, c.CreatorUserId, c.LastUpdateDate, c.LastUpdatedUserId));
         }
     }

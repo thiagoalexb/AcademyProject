@@ -19,9 +19,8 @@ namespace Academy.Infra.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Get all classes that implements IMapping
-            var typesToMapping = (from x in Assembly.GetExecutingAssembly().GetTypes()
-                                  where x.IsClass && typeof(IMapping).IsAssignableFrom(x)
-                                  select x).ToList();
+            var typesToMapping = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsClass
+                                                                && typeof(IMapping).IsAssignableFrom(x)).ToList();
 
             //Set config
             foreach (var mapping in typesToMapping)

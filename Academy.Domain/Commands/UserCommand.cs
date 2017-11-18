@@ -12,5 +12,6 @@ namespace Academy.Domain.Commands
         public string Email { get; protected set; }
         public string Password { get; protected set; }
         public DateTime DateOfBirth { get; protected set; }
+        public bool IsVerified{ get; protected set; }
     }
 }

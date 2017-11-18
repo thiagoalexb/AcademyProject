@@ -11,14 +11,10 @@ namespace Academy.Infra.Data.Repositories
         public UserRepository(DbContext context) : base(context)
         { }
 
-        public User GetByEmail(string email)
-        {
-            return DbSet.AsNoTracking().FirstOrDefault(x => x.Email == email);
-        }
+        public User GetByEmail(string email) =>
+            DbSet.FirstOrDefault(x => x.Email == email);
 
-        public User GetByEmailAndPassword(string email, string password)
-        {
-            return DbSet.AsNoTracking().FirstOrDefault(x => x.Email == email && x.Password == password);
-        }
+        public User GetByEmailAndPassword(string email, string password) =>
+            DbSet.FirstOrDefault(x => x.Email == email && x.Password == password);
     }
 }

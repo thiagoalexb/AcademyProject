@@ -1,6 +1,7 @@
 ﻿using Academy.Application.Interfaces;
 using Academy.Application.ViewModels;
 using Academy.Domain.Services.Interfaces;
+using Academy.Domain.Services.Utils;
 using Academy.WebAPI.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,19 +29,21 @@ namespace Academy.WebAPI.Controllers
             [FromServices]SigningConfigurations signingConfigurations,
             [FromServices]TokenConfigurations tokenConfigurations)
         {
-            bool hasUser = false;
+            var user = _userAppService.GetByEmail(loginViewModel.Email);
 
-            var user = _userAppService.GetByEmailAndPassword(loginViewModel.Email, loginViewModel.Password);
+            if(user == null) return new { authenticated = false, message = "Usuário não encontrado" };
 
-            hasUser = user != null;
+            if (!user.IsVerified) return new { authenticated = false, message = "Confirme seu e-mail" };
 
-            if(!hasUser) return new { authenticated = false, message = "Usuário não encontrado" };
+            else if (user.Password != Utils.EncryptPassword(loginViewModel.Password)) return new { authenticated = false, message = "Usuário ou senha incorretos!" };
 
-            if(!user.IsVerified) return new { authenticated = false, message = "Confirme seu e-mail" };
-            
-            if (hasUser) return new ManageToken().GetLoginObject(tokenConfigurations, signingConfigurations, user);
-
-            return new { authenticated = false, message = "Algum erro ocorreu. Tente novamente!" };
+            else
+            {
+                var login = new ManageToken().GetLoginObject(tokenConfigurations, signingConfigurations, user);
+                if(login == null) return new { authenticated = false, message = "Ocorreu algum erro, tente novamente." };
+                return login;
+            }
+             
         }
     }
 }

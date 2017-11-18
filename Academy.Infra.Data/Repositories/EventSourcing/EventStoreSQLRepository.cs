@@ -17,10 +17,8 @@ namespace Academy.Infra.Data.Repositories.EventSourcing
             _context = context;
         }
 
-        public IList<StoredEvent> All(Guid aggregateId)
-        {
-            return _context.Set<StoredEvent>().Where(x => x.AggregateId == aggregateId).ToList();
-        }
+        public IList<StoredEvent> All(Guid aggregateId) => 
+            _context.Set<StoredEvent>().Where(x => x.AggregateId == aggregateId).ToList();
 
         public void Store(StoredEvent theEvent)
         {
@@ -28,9 +26,7 @@ namespace Academy.Infra.Data.Repositories.EventSourcing
             _context.SaveChanges();
         }
 
-        public void Dispose()
-        {
+        public void Dispose() =>
             _context.Dispose();
-        }
     }
 }

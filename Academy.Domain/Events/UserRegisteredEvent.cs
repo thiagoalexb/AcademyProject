@@ -10,8 +10,8 @@ namespace Academy.Domain.Events
         {
             UserId = id;
             FirstName = firstName;
-            FirstName = lastName;
-            LastName = email;
+            LastName = lastName;
+            Email = email;
             Password = password;
             DateOfBirth = birthDate;
             AggregateId = id;

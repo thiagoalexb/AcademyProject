@@ -1,14 +1,9 @@
-﻿using Academy.Domain;
-using Academy.Domain.Core.Commands;
-using Academy.Domain.Interfaces;
+﻿using Academy.Domain.Core.Commands;
 using Academy.Domain.Interfaces.Core;
-using Academy.Infra.Data.Repositories;
-using Academy.Infra.Data.Repositories.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Linq;
-using System.Reflection;
 
 namespace Academy.Infra.Data.UnitOfWork
 {
@@ -17,10 +12,8 @@ namespace Academy.Infra.Data.UnitOfWork
         private readonly DbContext _context;
         private Hashtable repositories;
 
-        public UnitOfWork(DbContext context)
-        {
+        public UnitOfWork(DbContext context) => 
             _context = context;
-        }
 
         public TEntity Repository<TEntity>() where TEntity : class
         {
@@ -55,9 +48,7 @@ namespace Academy.Infra.Data.UnitOfWork
             return new CommandResponse(rowsAffected > 0);
         }
 
-        public void Dispose()
-        {
+        public void Dispose() => 
             _context.Dispose();
-        }
     }
 }

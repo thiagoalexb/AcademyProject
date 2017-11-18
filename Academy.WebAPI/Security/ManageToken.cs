@@ -13,20 +13,27 @@ namespace Academy.WebAPI.Security
     {
         public object GetLoginObject(TokenConfigurations tokenConfigurations, 
                                         SigningConfigurations signingConfigurations, 
-                                        UserViewModel userViewModel)
+                                        UserUpdatePasswordViewModel userViewModel)
         {
-            var dates = GetDates(tokenConfigurations);
-            return new
+            try
             {
-                authenticated = true,
-                created = dates.dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                expiration = dates.dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                accessToken = GenerateSecurityToken(tokenConfigurations, signingConfigurations, userViewModel, dates),
-                message = "OK"
-            };
+                var dates = GetDates(tokenConfigurations);
+                return new
+                {
+                    authenticated = true,
+                    created = dates.dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
+                    expiration = dates.dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+                    accessToken = GenerateSecurityToken(tokenConfigurations, signingConfigurations, userViewModel, dates),
+                    message = "OK"
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
-        public ClaimsIdentity GenerateClaimsIdentity(UserViewModel userViewModel)
+        public ClaimsIdentity GenerateClaimsIdentity(UserUpdatePasswordViewModel userViewModel)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
                 new GenericIdentity(userViewModel.UserId.ToString(), "Login"),
@@ -49,8 +56,8 @@ namespace Academy.WebAPI.Security
         }
 
         public string GenerateSecurityToken(TokenConfigurations tokenConfigurations, 
-                                            SigningConfigurations signingConfigurations, 
-                                            UserViewModel userViewModel,
+                                            SigningConfigurations signingConfigurations,
+                                            UserUpdatePasswordViewModel userViewModel,
                                             (DateTime dataCriacao, DateTime dataExpiracao) dates)
         {
             var handler = new JwtSecurityTokenHandler();

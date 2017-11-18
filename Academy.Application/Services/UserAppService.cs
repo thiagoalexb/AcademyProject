@@ -30,15 +30,17 @@ namespace Academy.Application.Services
             _eventStoreRepository = eventStoreRepository;
         }
 
-        public IEnumerable<UserViewModel> GetAll()
-        {
-            return _mapper.Map<IEnumerable<UserViewModel>>(_userRepository.GetAll());
-        }
+        public IEnumerable<UserViewModel> GetAll() =>
+            _mapper.Map<IEnumerable<UserViewModel>>(_userRepository.GetAll());
 
-        public UserViewModel Get(Guid id)
-        {
-            return _mapper.Map<UserViewModel>(_userRepository.Get(id));
-        }
+        public UserViewModel Get(Guid id) =>
+            _mapper.Map<UserViewModel>(_userRepository.Get(id));
+
+        public UserUpdatePasswordViewModel GetByEmail(string email) => 
+            _mapper.Map<UserUpdatePasswordViewModel>(_userRepository.GetByEmail(email));
+
+        public UserViewModel GetByEmailAndPassword(string email, string password) =>
+            _mapper.Map<UserViewModel>(_userRepository.GetByEmailAndPassword(email, password));
 
         public void Register(UserViewModel userViewModel)
         {
@@ -52,15 +54,16 @@ namespace Academy.Application.Services
             _bus.SendCommand(updateCommand);
         }
 
+        public void UpdatePassword(UserUpdatePasswordViewModel userViewModel)
+        {
+            var updateUserPasswordCommand = _mapper.Map<UpdateUserPasswordCommand>(userViewModel);
+            _bus.SendCommand(updateUserPasswordCommand);
+        }
+
         public void Remove(Guid id)
         {
             var removeCommand = new RemoveUserCommand(id);
             _bus.SendCommand(removeCommand);
-        }
-
-        public  UserViewModel GetByEmailAndPassword(string email, string password)
-        {
-            return _mapper.Map<UserViewModel>(_userRepository.GetByEmailAndPassword(email, password));
         }
 
         public void Dispose()

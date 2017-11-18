@@ -3,17 +3,13 @@ using System;
 
 namespace Academy.Domain.Events
 {
-    public class UserUpdatedEvent : EntityEvent
+    public class UserPasswordUpdatedEvent : EntityEvent
     {
-        public UserUpdatedEvent(Guid id, string firstName, string lastName, string email, string password, DateTime birthDate, bool isVerified,
+        public UserPasswordUpdatedEvent(Guid id, string password, bool isVerified,
                                 DateTime creationDate, Guid? creatorUserId, DateTime? lastUpdateDate, Guid? lastUpdatedUserId)
         {
             UserId = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
             Password = password;
-            DateOfBirth = birthDate;
             IsVerified = isVerified;
             AggregateId = id;
             CreationDate = creationDate;

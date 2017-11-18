@@ -18,39 +18,25 @@ namespace Academy.Infra.Data.Repositories.Core
             DbSet = Context.Set<TEntity>();
         }
 
-        public virtual TEntity Get(Guid id)
-        {
-            return DbSet.Find(id);
-        }
+        public virtual TEntity Get(Guid id) => 
+            DbSet.Find(id);
 
-        public virtual IEnumerable<TEntity> GetAll()
-        {
-            return DbSet.ToList();
-        }
+        public virtual IEnumerable<TEntity> GetAll() =>
+            DbSet.ToList();
 
-        public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            return DbSet.Where(predicate);
-        }
+        public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) => 
+            DbSet.Where(predicate.Compile());
 
-        public virtual void Add(TEntity entity)
-        {
+        public virtual void Add(TEntity entity) => 
             DbSet.Add(entity);
-        }
 
-        public virtual void AddRange(IEnumerable<TEntity> entities)
-        {
+        public virtual void AddRange(IEnumerable<TEntity> entities) =>
             DbSet.AddRange(entities);
-        }
 
-        public virtual void Remove(TEntity entity)
-        {
+        public virtual void Remove(TEntity entity) =>
             DbSet.Remove(entity);
-        }
 
-        public virtual void RemoveRange(IEnumerable<TEntity> entities)
-        {
+        public virtual void RemoveRange(IEnumerable<TEntity> entities) =>
             DbSet.RemoveRange(entities);
-        }
     }
 }

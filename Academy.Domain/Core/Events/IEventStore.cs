@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Academy.Domain.Core.Events
+﻿namespace Academy.Domain.Core.Events
 {
     public interface IEventStore
     {
